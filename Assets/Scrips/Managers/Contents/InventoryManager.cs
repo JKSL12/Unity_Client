@@ -19,6 +19,26 @@ public class InventoryManager : MonoBehaviour
         return item;
     }
 
+    public void SetFindItemSlot( int slot, int itemnum )
+    {
+        foreach( Item item in Items.Values)
+        {
+            if( item.Info.Slot == slot )
+            {
+                if( itemnum == 0 )
+                {
+                    item.Init();
+                }
+                else
+                {
+                    item.Count = itemnum;
+                }
+
+                break;
+            }
+        }
+    }
+
     public Item Find(Func<Item, bool> condition)
     {
         foreach (Item item in Items.Values)

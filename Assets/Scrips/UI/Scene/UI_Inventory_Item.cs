@@ -12,6 +12,9 @@ public class UI_Inventory_Item : UI_Base
     [SerializeField]
     Image _frame = null;
 
+    [SerializeField]
+    Text _text = null;
+
     public int ItemDbId { get; private set; }
     public int TemplateId { get; private set; }
     public int Count { get; private set; }
@@ -21,8 +24,21 @@ public class UI_Inventory_Item : UI_Base
     {
         _icon.gameObject.BindEvent((e) =>
         {
-            Debug.Log("Click Item");
+            if (TemplateId == 0) return;
 
+            if (bClicked)
+            {
+                bClicked = false;
+            }
+            else
+            {
+                bClicked = true;
+            }
+
+        }, Define.UIEvent.LClick);
+
+        _icon.gameObject.BindEvent((e) =>
+        {
             Data.ItemData itemData = null;
             Managers.Data.ItemDict.TryGetValue(TemplateId, out itemData);
 
@@ -36,8 +52,29 @@ public class UI_Inventory_Item : UI_Base
             equipPacket.Equipped = !Equipped;
 
             Managers.Network.Send(equipPacket);
-        });
-    }   
+        }, Define.UIEvent.LDbClick);
+
+        _icon.gameObject.BindEvent((e) =>
+        {
+            Data.ItemData itemData = null;
+            Managers.Data.ItemDict.TryGetValue(TemplateId, out itemData);
+
+            if (itemData == null) return;
+
+            if (itemData.itemType != ItemType.Consumable)
+                return;
+
+            if (Count <= 0) return;
+
+            C_UseItem usePacket = new C_UseItem();
+            usePacket.ItemDbId = ItemDbId;
+            usePacket.TemplateId = TemplateId;
+            usePacket.UseNum = 1;
+
+            Managers.Network.Send(usePacket);
+
+        }, Define.UIEvent.RClick);
+    }
     
     public void SetItem(Item item)
     {
@@ -50,6 +87,7 @@ public class UI_Inventory_Item : UI_Base
 
             _icon.gameObject.SetActive(false);
             _frame.gameObject.SetActive(false);
+            _text.gameObject.SetActive(false);
         }
         else
         {
@@ -64,8 +102,11 @@ public class UI_Inventory_Item : UI_Base
             Sprite icon = Managers.Resource.Load<Sprite>(itemData.iconPath);
             _icon.sprite = icon;
 
+            _text.text = $"{Count}";
+
             _icon.gameObject.SetActive(true);
             _frame.gameObject.SetActive(Equipped);
+            _text.gameObject.SetActive(true);
         }
     }
 }

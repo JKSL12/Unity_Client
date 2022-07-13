@@ -10,6 +10,8 @@ public abstract class UI_Base : MonoBehaviour
 	protected Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
 	public abstract void Init();
 
+    protected bool bClicked = false;
+
 	private void Awake()
 	{
 		Init();
@@ -47,20 +49,32 @@ public abstract class UI_Base : MonoBehaviour
 	protected Button GetButton(int idx) { return Get<Button>(idx); }
 	protected Image GetImage(int idx) { return Get<Image>(idx); }
 
-	public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
+	public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.LClick)
 	{
 		UI_EventHandler evt = Util.GetOrAddComponent<UI_EventHandler>(go);
 
 		switch (type)
 		{
-			case Define.UIEvent.Click:
-				evt.OnClickHandler -= action;
-				evt.OnClickHandler += action;
+			case Define.UIEvent.LClick:
+				evt.OnLeftClickHandler -= action;
+				evt.OnLeftClickHandler += action;
 				break;
-			case Define.UIEvent.Drag:
+            case Define.UIEvent.RClick:
+                evt.OnRightClickHandler -= action;
+                evt.OnRightClickHandler += action;
+                break;
+            case Define.UIEvent.Drag:
 				evt.OnDragHandler -= action;
 				evt.OnDragHandler += action;
 				break;
-		}
+            case Define.UIEvent.LDbClick:
+                evt.OnLDbClickHandler -= action;
+                evt.OnLDbClickHandler += action;
+                break;
+            case Define.UIEvent.RDbClick:
+                evt.OnRDbClickHandler -= action;
+                evt.OnRDbClickHandler += action;
+                break;
+        }
 	}
 }

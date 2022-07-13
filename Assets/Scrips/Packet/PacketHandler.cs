@@ -275,8 +275,18 @@ class PacketHandler
 
             UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
             gameSceneUI.StatUI.RefreshUI();
-        }
+        }        
+    }
 
-        Debug.Log($"{increaseExpPacket.LevelUp}, {increaseExpPacket.Level}, {increaseExpPacket.TotalExp}");
+    public static void S_UseItemHandler(PacketSession session, IMessage packet)
+    {
+        S_UseItem usePacket = (S_UseItem)packet;
+
+        Managers.Inven.SetFindItemSlot(usePacket.ItemSlot, usePacket.ItemNum);
+      
+        UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+        UI_Inventory invenUI = gameSceneUI.InvenUI;
+        invenUI.RefreshUI();
+        //gameSceneUI.StatUI.RefreshUI();
     }
 }

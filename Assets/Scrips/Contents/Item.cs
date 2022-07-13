@@ -46,6 +46,14 @@ public class Item
         ItemType = itemType;
     }
 
+    public void Init()
+    {
+        ItemDbId = 0;
+        TemplateId = 0;
+        Count = 0;
+        Equipped = false;
+    }
+
     public static Item MakeItem(ItemInfo itemInfo)
     {
         Item item = null;

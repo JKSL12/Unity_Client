@@ -21,7 +21,10 @@ public class Define
 
     public enum UIEvent
     {
-        Click,
+        LClick,
+        RClick,
         Drag,
+        LDbClick,
+        RDbClick,
     }
 }
