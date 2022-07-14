@@ -74,6 +74,8 @@ public class UI_Inventory_Item : UI_Base
             Managers.Network.Send(usePacket);
 
         }, Define.UIEvent.RClick);
+
+        SetItem(null);
     }
     
     public void SetItem(Item item)
@@ -104,9 +106,20 @@ public class UI_Inventory_Item : UI_Base
 
             _text.text = $"{Count}";
 
-            _icon.gameObject.SetActive(true);
-            _frame.gameObject.SetActive(Equipped);
-            _text.gameObject.SetActive(true);
+            
+
+            if (Count > 0)
+            {
+                _icon.gameObject.SetActive(true);
+                _frame.gameObject.SetActive(Equipped);
+                _text.gameObject.SetActive(true);
+            }                
+            else
+            {
+                _icon.gameObject.SetActive(false);
+                _frame.gameObject.SetActive(false);
+                _text.gameObject.SetActive(false);
+            }
         }
     }
 }

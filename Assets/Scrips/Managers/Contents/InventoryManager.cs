@@ -12,6 +12,11 @@ public class InventoryManager : MonoBehaviour
         Items.Add(item.ItemDbId, item);
     }
 
+    public void Remove(int itemDbId)
+    {
+        Items.Remove(itemDbId);
+    }
+
     public Item Get(int itemDbId)
     {
         Item item = null;
@@ -25,11 +30,11 @@ public class InventoryManager : MonoBehaviour
         {
             if( item.Info.Slot == slot )
             {
-                if( itemnum == 0 )
+                if( itemnum <= 0 )
                 {
-                    item.Init();
+                    itemnum = 0;
                 }
-                else
+
                 {
                     item.Count = itemnum;
                 }
