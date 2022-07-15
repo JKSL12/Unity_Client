@@ -216,7 +216,7 @@ class PacketHandler
         UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
         UI_Inventory invenUI = gameSceneUI.InvenUI;
         invenUI.RefreshUI();
-        gameSceneUI.StatUI.RefreshUI();
+        gameSceneUI.equipUI.RefreshUI();
 
         if (Managers.Object.MyPlayer != null)
             Managers.Object.MyPlayer.RefreshAdditionalStat();
@@ -233,13 +233,14 @@ class PacketHandler
         item.Equipped = equipItemOk.Equipped;
         Debug.Log("아이템 착용 변경");
 
+        if (Managers.Object.MyPlayer != null)
+            Managers.Object.MyPlayer.RefreshAdditionalStat();
+
         UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
         UI_Inventory invenUI = gameSceneUI.InvenUI;
         invenUI.RefreshUI();
-        gameSceneUI.StatUI.RefreshUI();
-
-        if (Managers.Object.MyPlayer != null)
-            Managers.Object.MyPlayer.RefreshAdditionalStat();
+        gameSceneUI.equipUI.RefreshUI();
+        gameSceneUI.statUI.RefreshUI();
     }
 
 
@@ -251,7 +252,7 @@ class PacketHandler
     public static void S_PingHandler(PacketSession session, IMessage packet)
     {
         C_Pong pongPacket = new C_Pong();
-        Debug.Log("PingCheck");
+
         Managers.Network.Send(pongPacket);
     }
 
@@ -270,11 +271,15 @@ class PacketHandler
             pc.Stat.Level = increaseExpPacket.Level;
             pc.Stat.TotalExp = increaseExpPacket.TotalExp;
 
-            if( increaseExpPacket.LevelUp )
+
+            if (increaseExpPacket.LevelUp)
+            {
                 pc.LevelUp();
+                pc.Stat.BonusStat = increaseExpPacket.BonusStat;
+            }
 
             UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
-            gameSceneUI.StatUI.RefreshUI();
+            gameSceneUI.statUI.RefreshUI();
         }        
     }
 
@@ -287,6 +292,45 @@ class PacketHandler
         UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
         UI_Inventory invenUI = gameSceneUI.InvenUI;
         invenUI.RefreshUI();
-        //gameSceneUI.StatUI.RefreshUI();
+        //gameSceneUI.equipUI.RefreshUI();
+    }
+
+    public static void S_StatPlusminusHandler(PacketSession session, IMessage packet)
+    {
+        S_StatPlusminus statPacket = (S_StatPlusminus)packet;
+
+        if (Managers.Object.MyPlayer != null)
+        {
+            switch (statPacket.StatType)
+            {
+                case 1:
+                    {
+                        Managers.Object.MyPlayer.Stat.Str = statPacket.StatNum;
+                    }
+                    break;
+                case 2:
+                    {
+                        Managers.Object.MyPlayer.Stat.Dex = statPacket.StatNum;
+                    }
+                    break;
+                case 3:
+                    {
+                        Managers.Object.MyPlayer.Stat.Mag = statPacket.StatNum;
+                    }
+                    break;
+                case 4:
+                    {
+                        Managers.Object.MyPlayer.Stat.Vit = statPacket.StatNum;
+                    }
+                    break;
+            }
+
+            Managers.Object.MyPlayer.Stat.BonusStat = statPacket.BonusStat;
+
+            Managers.Object.MyPlayer.RefreshAdditionalStat();
+        }
+
+        UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+        gameSceneUI.statUI.RefreshUI();
     }
 }

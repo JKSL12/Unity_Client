@@ -91,7 +91,22 @@ public class MyPlayerController : PlayerController
         else if (Input.GetKey(KeyCode.C))
         {
             UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
-            UI_Stat statUI = gameSceneUI.StatUI;
+            UI_Equip equipUI = gameSceneUI.equipUI;
+
+            if (equipUI.gameObject.activeSelf)
+            {
+                equipUI.gameObject.SetActive(false);
+            }
+            else
+            {
+                equipUI.gameObject.SetActive(true);
+                equipUI.RefreshUI();
+            }
+        }
+        else if (Input.GetKey(KeyCode.Z))
+        {
+            UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+            UI_Stat statUI = gameSceneUI.statUI;
 
             if (statUI.gameObject.activeSelf)
             {
