@@ -7,6 +7,7 @@ using static Define;
 public class MyPlayerController : PlayerController
 {
     bool _moveKeyPressed = false;
+    bool _inputChatPressed = false;
 
     public int WeaponDamage { get; private set; }
     public int ArmorDefence { get; private set; }
@@ -72,8 +73,18 @@ public class MyPlayerController : PlayerController
     }
 
     void GetUIKeyInput()
-    {
-        if (Input.GetKey(KeyCode.I))
+    {    
+        if (Input.GetKeyUp(KeyCode.Return))
+        {
+            UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+            UI_Chat chatUI = gameSceneUI.chatUI;
+
+            _inputChatPressed = chatUI.SendMsgCheck();
+        }
+
+        if (_inputChatPressed == true) return;
+
+        if (Input.GetKeyUp(KeyCode.I))
         {
             UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
             UI_Inventory invenUI = gameSceneUI.InvenUI;
@@ -88,7 +99,7 @@ public class MyPlayerController : PlayerController
                 invenUI.RefreshUI();
             }
         }
-        else if (Input.GetKey(KeyCode.C))
+        else if (Input.GetKeyUp(KeyCode.C))
         {
             UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
             UI_Equip equipUI = gameSceneUI.equipUI;
@@ -103,7 +114,7 @@ public class MyPlayerController : PlayerController
                 equipUI.RefreshUI();
             }
         }
-        else if (Input.GetKey(KeyCode.Z))
+        else if (Input.GetKeyUp(KeyCode.Z))
         {
             UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
             UI_Stat statUI = gameSceneUI.statUI;
@@ -118,7 +129,7 @@ public class MyPlayerController : PlayerController
                 statUI.RefreshUI();
             }
         }
-        else if (Input.GetKey(KeyCode.X))
+        else if (Input.GetKeyUp(KeyCode.X))
         {
             C_PlayerKill killPacket = new C_PlayerKill();
             Managers.Network.Send(killPacket);
@@ -127,6 +138,8 @@ public class MyPlayerController : PlayerController
 
     void GetDirInput()
     {
+        if (_inputChatPressed == true) return;
+
         _moveKeyPressed = true;
 
         if (Input.GetKey(KeyCode.W))

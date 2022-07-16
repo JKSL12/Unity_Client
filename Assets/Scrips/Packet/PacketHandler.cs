@@ -113,13 +113,13 @@ class PacketHandler
     public static void S_DieHandler(PacketSession session, IMessage packet)
     {
         S_Die diePacket = packet as S_Die;
-        
+
         GameObject go = Managers.Object.FindById(diePacket.ObjectId);
 
         if (go == null) return;
 
         CreatureController cc = go.GetComponent<CreatureController>();
-        
+
         if (cc != null)
         {
             cc.Hp = 0;
@@ -143,9 +143,9 @@ class PacketHandler
     {
         S_Login loginPacket = (S_Login)packet;
 
-        Debug.Log($"LoginOk({loginPacket.LoginOk})");                
+        Debug.Log($"LoginOk({loginPacket.LoginOk})");
 
-        if( loginPacket.Players == null || loginPacket.Players.Count == 0)
+        if (loginPacket.Players == null || loginPacket.Players.Count == 0)
         {
             C_CreatePlayer createPacket = new C_CreatePlayer();
             createPacket.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
@@ -164,7 +164,7 @@ class PacketHandler
     {
         S_CreatePlayer createOkPacket = (S_CreatePlayer)packet;
 
-        if( createOkPacket.Player == null )
+        if (createOkPacket.Player == null)
         {
             C_CreatePlayer createPacket = new C_CreatePlayer();
             createPacket.Name = $"Player_{Random.Range(0, 10000).ToString("0000")}";
@@ -182,9 +182,9 @@ class PacketHandler
     {
         S_ItemList itemList = (S_ItemList)packet;
 
-       // UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+        // UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
 
-       // UI_Inventory invenUI = gameSceneUI.InvenUI;
+        // UI_Inventory invenUI = gameSceneUI.InvenUI;
 
         Managers.Inven.Clear();
 
@@ -198,14 +198,14 @@ class PacketHandler
         if (Managers.Object.MyPlayer != null)
             Managers.Object.MyPlayer.RefreshAdditionalStat();
 
-       // invenUI.gameObject.SetActive(true);
-       // invenUI.RefreshUI();
+        // invenUI.gameObject.SetActive(true);
+        // invenUI.RefreshUI();
     }
 
     public static void S_AddItemHandler(PacketSession session, IMessage packet)
     {
         S_AddItem itemList = (S_AddItem)packet;
-                
+
         foreach (ItemInfo itemInfo in itemList.Items)
         {
             //Debug.Log($"{item.TemplateId} : {item.Count}");
@@ -280,7 +280,7 @@ class PacketHandler
 
             UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
             gameSceneUI.statUI.RefreshUI();
-        }        
+        }
     }
 
     public static void S_UseItemHandler(PacketSession session, IMessage packet)
@@ -288,7 +288,7 @@ class PacketHandler
         S_UseItem usePacket = (S_UseItem)packet;
 
         Managers.Inven.SetFindItemSlot(usePacket.ItemSlot, usePacket.ItemNum);
-      
+
         UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
         UI_Inventory invenUI = gameSceneUI.InvenUI;
         invenUI.RefreshUI();
@@ -332,5 +332,13 @@ class PacketHandler
 
         UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
         gameSceneUI.statUI.RefreshUI();
+    }
+
+    public static void S_ChatHandler(PacketSession session, IMessage packet)
+    {
+        S_Chat chatPacket = (S_Chat)packet;
+        UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+
+        gameSceneUI.chatUI.SetChatText(chatPacket.ChatMsg);
     }
 }
