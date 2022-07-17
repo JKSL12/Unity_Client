@@ -38,7 +38,7 @@ public class UI_Inventory : UI_Base
             if(item.Slot < 0 || item.Slot >= 20)
             continue;
 
-            Items[item.Slot].SetItem(item);
+            Items[item.Slot].SetItem(item.Slot, item);
         }
     }
 }

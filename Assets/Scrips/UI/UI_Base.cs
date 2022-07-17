@@ -9,9 +9,7 @@ public abstract class UI_Base : MonoBehaviour
 {
 	protected Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
 	public abstract void Init();
-
-    protected bool bClicked = false;
-
+    
 	private void Awake()
 	{
 		Init();

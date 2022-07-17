@@ -96,6 +96,7 @@
     <Compile Include="Assets\Scrips\UI\Popup\UI_Popup.cs" />
     <Compile Include="Assets\Scrips\UI\Popup\UI_SelectServerPopup.cs" />
     <Compile Include="Assets\Scrips\UI\Popup\UI_SelectServerPopup_Item.cs" />
+    <Compile Include="Assets\Scrips\UI\Scene\ImageClick.cs" />
     <Compile Include="Assets\Scrips\UI\Scene\UI_Chat.cs" />
     <Compile Include="Assets\Scrips\UI\Scene\UI_Equip.cs" />
     <Compile Include="Assets\Scrips\UI\Scene\UI_GameScene.cs" />

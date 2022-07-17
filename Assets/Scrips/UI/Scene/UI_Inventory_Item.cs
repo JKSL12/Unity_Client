@@ -19,6 +19,7 @@ public class UI_Inventory_Item : UI_Base
     public int TemplateId { get; private set; }
     public int Count { get; private set; }
     public bool Equipped { get; private set; }
+    public int Slot { get; private set; }
 
     public override void Init()
     {
@@ -26,14 +27,38 @@ public class UI_Inventory_Item : UI_Base
         {
             if (TemplateId == 0) return;
 
-            if (bClicked)
+            if (Managers.Object.MyPlayer == null) return;
+
+            if (Managers.Object.MyPlayer.clickItem != null)
             {
-                bClicked = false;
+                UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+
+                if (Managers.Object.MyPlayer.clickItem.slot == -1)
+                {                  
+                    Managers.Object.MyPlayer.clickItem.itemDbId = ItemDbId;
+                    Managers.Object.MyPlayer.clickItem.templateId = TemplateId;
+                    Managers.Object.MyPlayer.clickItem.slot = Slot;
+
+                    gameSceneUI.IC.gameObject.SetActive(true);
+
+                    SetIconA(0.5f);
+                }
+                else
+                {                    
+                    gameSceneUI.InvenUI.Items[Managers.Object.MyPlayer.clickItem.slot].SetIconA(1.0f);
+
+                    if (Managers.Object.MyPlayer.clickItem.slot != Slot)
+                    {
+                        // 아이템 자리 변경
+                    }
+
+                    gameSceneUI.IC.gameObject.SetActive(false);
+
+                    Managers.Object.MyPlayer.clickItem.Init();
+                    SetIconA(1.0f);
+                }
             }
-            else
-            {
-                bClicked = true;
-            }
+            
 
         }, Define.UIEvent.LClick);
 
@@ -75,13 +100,14 @@ public class UI_Inventory_Item : UI_Base
 
         }, Define.UIEvent.RClick);
 
-        SetItem(null);
+        SetItem(-1, null);
     }
     
-    public void SetItem(Item item)
+    public void SetItem(int slot, Item item)
     {
         if (item == null)
         {
+            Slot = slot;
             ItemDbId = 0;
             TemplateId = 0;
             Count = 0;
@@ -93,6 +119,7 @@ public class UI_Inventory_Item : UI_Base
         }
         else
         {
+            Slot = slot;
             ItemDbId = item.ItemDbId;
             TemplateId = item.TemplateId;
             Count = item.Count;
@@ -121,5 +148,10 @@ public class UI_Inventory_Item : UI_Base
                 _text.gameObject.SetActive(false);
             }
         }
+    }
+
+    public void SetIconA(float value)
+    {
+        _icon.color = new Color(_icon.color.r, _icon.color.g, _icon.color.b, value);
     }
 }
