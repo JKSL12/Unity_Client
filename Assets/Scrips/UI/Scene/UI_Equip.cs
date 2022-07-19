@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Equip : UI_Base
+public class UI_Equip : UI_Movable
 {
     enum Images
     {
@@ -28,6 +28,8 @@ public class UI_Equip : UI_Base
     bool _init = false;
     public override void Init()
     {
+        base.Init();
+
         Bind<Image>(typeof(Images));
         Bind<Text>(typeof(Texts));
 

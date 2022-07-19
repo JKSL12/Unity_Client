@@ -31,7 +31,8 @@ public class MyPlayerController : PlayerController
 
     protected override void Init()
     {
-        base.Init();         
+        base.Init();
+        clickItem.Init();
     }
 
     protected override void UpdateController()

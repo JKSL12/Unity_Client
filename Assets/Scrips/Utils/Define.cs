@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Define
 {
+    public const string WebHost = "https://58.141.79.181:5001/api";
+
     public enum Scene
     {
         Unknown,
@@ -24,6 +26,7 @@ public class Define
         LClick,
         RClick,
         Drag,
+        EndDrag,
         LDbClick,
         RDbClick,
     }

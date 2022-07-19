@@ -12,7 +12,7 @@ public class LoginScene : BaseScene
 
         SceneType = Define.Scene.Login;
 
-        Managers.Web.BaseUrl = "https://58.141.59.214:5001/api";
+        Managers.Web.BaseUrl = Define.WebHost;
         //Managers.Web.BaseUrl = "https://localhost:5001/api";
 
 

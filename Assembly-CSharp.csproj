@@ -106,6 +106,7 @@
     <Compile Include="Assets\Scrips\UI\Scene\UI_Stat.cs" />
     <Compile Include="Assets\Scrips\UI\UI_Base.cs" />
     <Compile Include="Assets\Scrips\UI\UI_EventHandler.cs" />
+    <Compile Include="Assets\Scrips\UI\UI_Movable.cs" />
     <Compile Include="Assets\Scrips\Utils\Define.cs" />
     <Compile Include="Assets\Scrips\Utils\Extension.cs" />
     <Compile Include="Assets\Scrips\Utils\PriorityQueue.cs" />

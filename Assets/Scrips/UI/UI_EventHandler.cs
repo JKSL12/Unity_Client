@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
+public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler, IEndDragHandler
 {    
     public Action<PointerEventData> OnLeftClickHandler = null;
     public Action<PointerEventData> OnLDbClickHandler = null;
     public Action<PointerEventData> OnRightClickHandler = null;
     public Action<PointerEventData> OnRDbClickHandler = null;
     public Action<PointerEventData> OnDragHandler = null;
+    public Action<PointerEventData> OnEndDragHandler = null;
 
     long time = Environment.TickCount;
 
@@ -48,7 +49,15 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
 
 	public void OnDrag(PointerEventData eventData)
     {
+        Debug.Log("Drag");
 		if (OnDragHandler != null)
             OnDragHandler.Invoke(eventData);
 	}
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        Debug.Log("EndDrag");
+        if (OnEndDragHandler != null)
+            OnEndDragHandler.Invoke(eventData);        
+    }
 }

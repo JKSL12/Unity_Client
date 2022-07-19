@@ -8,11 +8,11 @@ using UnityEngine.UI;
 public abstract class UI_Base : MonoBehaviour
 {
 	protected Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
-	public abstract void Init();
+	public abstract void Init();    
     
 	private void Awake()
-	{
-		Init();
+	{       
+		Init();       
 	}
 
 	protected void Bind<T>(Type type) where T : UnityEngine.Object
@@ -65,6 +65,10 @@ public abstract class UI_Base : MonoBehaviour
 				evt.OnDragHandler -= action;
 				evt.OnDragHandler += action;
 				break;
+            case Define.UIEvent.EndDrag:
+                evt.OnEndDragHandler -= action;
+                evt.OnEndDragHandler += action;
+                break;
             case Define.UIEvent.LDbClick:
                 evt.OnLDbClickHandler -= action;
                 evt.OnLDbClickHandler += action;

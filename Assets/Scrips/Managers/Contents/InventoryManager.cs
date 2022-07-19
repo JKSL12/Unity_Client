@@ -44,6 +44,13 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public void SetItemSlot( int slot, Item item )
+    {
+        int tempSlot = slot;
+        Items[slot] = item;
+        Items[slot].Slot = slot;
+    }
+
     public Item Find(Func<Item, bool> condition)
     {
         foreach (Item item in Items.Values)

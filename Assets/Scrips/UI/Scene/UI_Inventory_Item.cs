@@ -23,10 +23,8 @@ public class UI_Inventory_Item : UI_Base
 
     public override void Init()
     {
-        _icon.gameObject.BindEvent((e) =>
-        {
-            if (TemplateId == 0) return;
-
+        this.gameObject.BindEvent((e) =>
+        {           
             if (Managers.Object.MyPlayer == null) return;
 
             if (Managers.Object.MyPlayer.clickItem != null)
@@ -34,7 +32,9 @@ public class UI_Inventory_Item : UI_Base
                 UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
 
                 if (Managers.Object.MyPlayer.clickItem.slot == -1)
-                {                  
+                {
+                    if (TemplateId == 0) return;
+
                     Managers.Object.MyPlayer.clickItem.itemDbId = ItemDbId;
                     Managers.Object.MyPlayer.clickItem.templateId = TemplateId;
                     Managers.Object.MyPlayer.clickItem.slot = Slot;
@@ -44,26 +44,68 @@ public class UI_Inventory_Item : UI_Base
                     SetIconA(0.5f);
                 }
                 else
-                {                    
+                {
+                    Debug.Log("itemClick");
                     gameSceneUI.InvenUI.Items[Managers.Object.MyPlayer.clickItem.slot].SetIconA(1.0f);
 
                     if (Managers.Object.MyPlayer.clickItem.slot != Slot)
                     {
+                        Debug.Log("itemClick Move");
                         // 아이템 자리 변경
+                        C_MoveItem moveItem = new C_MoveItem();
+                        moveItem.ItemDbId = Managers.Object.MyPlayer.clickItem.itemDbId;
+                        moveItem.TargetSlot = Slot;
+                        Managers.Network.Send(moveItem);
                     }
 
                     gameSceneUI.IC.gameObject.SetActive(false);
 
-                    Managers.Object.MyPlayer.clickItem.Init();
-                    SetIconA(1.0f);
+                    Managers.Object.MyPlayer.clickItem.Init();                    
                 }
             }
-            
-
         }, Define.UIEvent.LClick);
 
-        _icon.gameObject.BindEvent((e) =>
+        //_icon.gameObject.BindEvent((e) =>
+        //{
+        //    if (TemplateId == 0) return;
+
+        //    if (Managers.Object.MyPlayer == null) return;
+
+        //    if (Managers.Object.MyPlayer.clickItem != null)
+        //    {
+        //        UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+
+        //        if (Managers.Object.MyPlayer.clickItem.slot == -1)
+        //        {                  
+        //            Managers.Object.MyPlayer.clickItem.itemDbId = ItemDbId;
+        //            Managers.Object.MyPlayer.clickItem.templateId = TemplateId;
+        //            Managers.Object.MyPlayer.clickItem.slot = Slot;
+
+        //            gameSceneUI.IC.gameObject.SetActive(true);
+
+        //            SetIconA(0.5f);
+        //        }
+        //        else
+        //        {                    
+        //            gameSceneUI.InvenUI.Items[Managers.Object.MyPlayer.clickItem.slot].SetIconA(1.0f);
+
+        //            if (Managers.Object.MyPlayer.clickItem.slot != Slot)
+        //            {
+        //                // 아이템 자리 변경
+        //            }
+
+        //            gameSceneUI.IC.gameObject.SetActive(false);
+
+        //            Managers.Object.MyPlayer.clickItem.Init();
+        //            SetIconA(1.0f);
+        //        }
+        //    }            
+        //}, Define.UIEvent.LClick);
+
+        this.gameObject.BindEvent((e) =>
         {
+            if (TemplateId == 0) return;
+
             Data.ItemData itemData = null;
             Managers.Data.ItemDict.TryGetValue(TemplateId, out itemData);
 
@@ -77,10 +119,14 @@ public class UI_Inventory_Item : UI_Base
             equipPacket.Equipped = !Equipped;
 
             Managers.Network.Send(equipPacket);
+
+            Managers.Object.MyPlayer.clickItem.Init();
         }, Define.UIEvent.LDbClick);
 
-        _icon.gameObject.BindEvent((e) =>
+        this.gameObject.BindEvent((e) =>
         {
+            if (TemplateId == 0) return;
+
             Data.ItemData itemData = null;
             Managers.Data.ItemDict.TryGetValue(TemplateId, out itemData);
 
@@ -132,9 +178,7 @@ public class UI_Inventory_Item : UI_Base
             _icon.sprite = icon;
 
             _text.text = $"{Count}";
-
-            
-
+                        
             if (Count > 0)
             {
                 _icon.gameObject.SetActive(true);

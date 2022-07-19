@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_Stat : UI_Base
+public class UI_Stat : UI_Movable
 {
     [SerializeField]
     Button _strP;
@@ -61,6 +61,8 @@ public class UI_Stat : UI_Base
     bool _init = false;
     public override void Init()
     {
+        base.Init();
+
         Bind<Text>(typeof(Texts));
         Bind<Button>(typeof(Buttons));
 

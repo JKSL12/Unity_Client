@@ -15,7 +15,7 @@ public class CertificateWhore : CertificateHandler
 
 public class WebManager
 {
-    public string BaseUrl { get; set; } = "https://58.141.59.214:5001/api";
+    public string BaseUrl { get; set; } = Define.WebHost;
     //"https://localhost:5001/api";
 
     public void SendPostRequest<T>(string url, object obj, Action<T> res)

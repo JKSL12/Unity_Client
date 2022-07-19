@@ -341,4 +341,14 @@ class PacketHandler
 
         gameSceneUI.chatUI.SetChatText(chatPacket.ChatMsg);
     }
+
+    public static void S_MoveItemHandler(PacketSession session, IMessage packet)
+    {
+        S_MoveItem moveItem = (S_MoveItem)packet;
+        UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+
+        UI_Inventory invenUI = gameSceneUI.InvenUI;
+        invenUI.ChangeSlotItem(moveItem.OriginSlot, moveItem.DestSlot);
+        invenUI.RefreshUI();
+    }
 }
