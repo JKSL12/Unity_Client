@@ -109,13 +109,10 @@ public class MyPlayerController : PlayerController
             if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() == false)
             {
                 C_DropItem dropPacket = new C_DropItem();
-                dropPacket.ItemDbId = clickItem.itemDbId;
-                dropPacket.TemplateId = clickItem.templateId;
                 dropPacket.Slot = clickItem.slot;
+                dropPacket.ItemNum = 1;
 
                 Managers.Network.Send(dropPacket);
-
-                Debug.Log($"drop item : {dropPacket.ItemDbId}, {dropPacket.TemplateId}, {dropPacket.Slot}");
                 clickItem.Init();
             }
             else

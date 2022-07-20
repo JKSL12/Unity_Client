@@ -62,7 +62,19 @@ public class Item
         Managers.Data.ItemDict.TryGetValue(itemInfo.TemplateId, out itemData);
 
         if (itemData == null)
-            return null;
+        {
+            item = new Item(ItemType.None);
+
+            if (item != null)
+            {
+                item.ItemDbId = itemInfo.ItemDbId;
+                item.Count = itemInfo.Count;
+                item.Slot = itemInfo.Slot;
+                item.Equipped = itemInfo.Equipped;
+            }
+
+            return item;
+        }
 
         switch (itemData.itemType)
         {

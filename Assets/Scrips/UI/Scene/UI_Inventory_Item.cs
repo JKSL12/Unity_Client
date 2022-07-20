@@ -53,8 +53,8 @@ public class UI_Inventory_Item : UI_Base
                         Debug.Log("itemClick Move");
                         // 아이템 자리 변경
                         C_MoveItem moveItem = new C_MoveItem();
-                        moveItem.ItemDbId = Managers.Object.MyPlayer.clickItem.itemDbId;
-                        moveItem.TargetSlot = Slot;
+                        moveItem.OriginSlot = Managers.Object.MyPlayer.clickItem.slot;
+                        moveItem.DestSlot = Slot;
                         Managers.Network.Send(moveItem);
                     }
 
@@ -115,7 +115,7 @@ public class UI_Inventory_Item : UI_Base
                 return;
 
             C_EquipItem equipPacket = new C_EquipItem();
-            equipPacket.ItemDbId = ItemDbId;
+            equipPacket.Slot = Slot;
             equipPacket.Equipped = !Equipped;
 
             Managers.Network.Send(equipPacket);
@@ -138,8 +138,7 @@ public class UI_Inventory_Item : UI_Base
             if (Count <= 0) return;
 
             C_UseItem usePacket = new C_UseItem();
-            usePacket.ItemDbId = ItemDbId;
-            usePacket.TemplateId = TemplateId;
+            usePacket.Slot = Slot;
             usePacket.UseNum = 1;
 
             Managers.Network.Send(usePacket);
@@ -170,6 +169,14 @@ public class UI_Inventory_Item : UI_Base
             TemplateId = item.TemplateId;
             Count = item.Count;
             Equipped = item.Equipped;
+
+            if (TemplateId == 0)
+            {
+                _icon.gameObject.SetActive(false);
+                _frame.gameObject.SetActive(false);
+                _text.gameObject.SetActive(false);
+                return;
+            }
 
             Data.ItemData itemData = null;
             Managers.Data.ItemDict.TryGetValue(TemplateId, out itemData);

@@ -9,46 +9,56 @@ public class InventoryManager : MonoBehaviour
 
     public void Add(Item item)
     {
-        Items.Add(item.ItemDbId, item);
+        Items.Add(item.Slot, item);
     }
 
-    public void Remove(int itemDbId)
+    public void Remove(int Slot)
     {
-        Items.Remove(itemDbId);
+        Items.Remove(Slot);
     }
 
-    public Item Get(int itemDbId)
+    public Item Get(int Slot)
     {
         Item item = null;
-        Items.TryGetValue(itemDbId, out item);
+        Items.TryGetValue(Slot, out item);
         return item;
+    }
+
+    public void Set(Item newitem)
+    {
+        Item item = null;
+        Items.TryGetValue(newitem.Slot, out item);
+
+        if (item != null)
+            item = newitem;
     }
 
     public void SetFindItemSlot( int slot, int itemnum )
     {
-        foreach( Item item in Items.Values)
-        {
-            if( item.Info.Slot == slot )
-            {
-                if( itemnum <= 0 )
-                {
-                    itemnum = 0;
-                }
+        Items[slot].Count = itemnum;
 
-                {
-                    item.Count = itemnum;
-                }
+        //foreach ( Item item in Items.Values)
+        //{
+        //    if( item.Info.Slot == slot )
+        //    {
+        //        if( itemnum <= 0 )
+        //        {
+        //            itemnum = 0;
+        //        }
 
-                break;
-            }
-        }
+        //        {
+        //            item.Count = itemnum;
+        //        }
+
+        //        break;
+        //    }
+        //}
     }
 
-    public void SetItemSlot( int slot, Item item )
+    public void SwapItemSlot( int orgSlot, int targetSlot )
     {
-        int tempSlot = slot;
-        Items[slot] = item;
-        Items[slot].Slot = slot;
+        Items[orgSlot].Slot = targetSlot;
+        Items[targetSlot].Slot = orgSlot;
     }
 
     public Item Find(Func<Item, bool> condition)

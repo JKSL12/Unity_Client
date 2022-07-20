@@ -210,7 +210,7 @@ class PacketHandler
         {
             //Debug.Log($"{item.TemplateId} : {item.Count}");
             Item item = Item.MakeItem(itemInfo);
-            Managers.Inven.Add(item);
+            Managers.Inven.Set(item);
         }
 
         UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
@@ -226,7 +226,7 @@ class PacketHandler
     {
         S_EquipItem equipItemOk = (S_EquipItem)packet;
 
-        Item item = Managers.Inven.Get(equipItemOk.ItemDbId);
+        Item item = Managers.Inven.Get(equipItemOk.Slot);
         if (item == null)
             return;
 
@@ -347,8 +347,9 @@ class PacketHandler
         S_MoveItem moveItem = (S_MoveItem)packet;
         UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
 
-        UI_Inventory invenUI = gameSceneUI.InvenUI;
-        invenUI.ChangeSlotItem(moveItem.OriginSlot, moveItem.DestSlot);
+        Managers.Inven.SwapItemSlot(moveItem.OriginSlot, moveItem.DestSlot);
+
+        UI_Inventory invenUI = gameSceneUI.InvenUI;        
         invenUI.RefreshUI();
     }
 }
