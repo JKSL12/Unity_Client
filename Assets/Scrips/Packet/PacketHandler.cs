@@ -347,7 +347,18 @@ class PacketHandler
         S_MoveItem moveItem = (S_MoveItem)packet;
         UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
 
-        Managers.Inven.SwapItemSlot(moveItem.OriginSlot, moveItem.DestSlot);
+        Item orgItem = Managers.Inven.Get(moveItem.OriginSlot);
+        Item destItem = Managers.Inven.Get(moveItem.DestSlot);
+
+        if (orgItem == null || destItem == null) return;
+
+        orgItem.Slot = moveItem.DestSlot;
+        destItem.Slot = moveItem.OriginSlot;
+
+        Managers.Inven.Set(orgItem);
+        Managers.Inven.Set(destItem);
+
+        //Managers.Inven.SwapItemSlot(moveItem.OriginSlot, moveItem.DestSlot);
 
         UI_Inventory invenUI = gameSceneUI.InvenUI;        
         invenUI.RefreshUI();

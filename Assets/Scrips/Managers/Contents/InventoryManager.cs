@@ -26,11 +26,7 @@ public class InventoryManager : MonoBehaviour
 
     public void Set(Item newitem)
     {
-        Item item = null;
-        Items.TryGetValue(newitem.Slot, out item);
-
-        if (item != null)
-            item = newitem;
+        Items[newitem.Slot] = newitem;
     }
 
     public void SetFindItemSlot( int slot, int itemnum )
