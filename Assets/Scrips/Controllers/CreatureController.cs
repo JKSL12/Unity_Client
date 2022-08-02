@@ -30,7 +30,7 @@ public class CreatureController : BaseController
 
     protected void AddHpBar()
     {
-        GameObject go = Managers.Resource.Instantiate("UI/HpBar", transform);
+        GameObject go = Managers.Resource.Instantiate("UI/SubItem/HpBar", transform);
         go.transform.localPosition = new Vector3(0, 0.5f, 0);
         go.name = "HpBar";
         _hpBar = go.GetComponent<HpBar>();
@@ -50,6 +50,24 @@ public class CreatureController : BaseController
         
         _hpBar.SetHpBar(ratio);
     }
+
+    public void ShowDamage(int damage, bool critical)
+    {
+        UI_GameScene gameSceneUI = Managers.UI.SceneUI as UI_GameScene;
+        GameObject go = Managers.Resource.Instantiate("UI/SubItem/Damage", transform);
+        Vector3 uiPosition = Camera.main.WorldToScreenPoint(transform.position);
+        //go.transform.localPosition = uiPosition;
+        go.transform.position = new Vector3( uiPosition.x, uiPosition.y + 0.6f, uiPosition.z);
+        //go.transform.position = transform.position;
+        go.name = "Damage";
+        //go.transform.position = new Vector3(transform.position.x, transform.position.y + 0.6f, transform.position.z);
+
+        go.transform.SetParent(gameSceneUI.transform);
+        
+
+        go.GetComponent<Damage>().SetDamage(damage, critical);
+    }
+
     protected override void Init()
     {
         base.Init();

@@ -62,6 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scrips\Contents\Damage.cs" />
     <Compile Include="Assets\Scrips\Contents\HpBar.cs" />
     <Compile Include="Assets\Scrips\Contents\Item.cs" />
     <Compile Include="Assets\Scrips\Controllers\ArrowController.cs" />

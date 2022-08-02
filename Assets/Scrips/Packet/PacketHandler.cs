@@ -107,6 +107,8 @@ class PacketHandler
         if (cc != null)
         {
             cc.Hp = changePacket.Hp;
+
+            cc.ShowDamage(changePacket.Damage, changePacket.Critical);
         }
     }
 
