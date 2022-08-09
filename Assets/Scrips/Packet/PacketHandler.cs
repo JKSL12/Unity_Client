@@ -42,8 +42,9 @@ class PacketHandler
 
         foreach (ObjectInfo obj in spawnPacket.Objects)
         {
-            Managers.Object.Add(obj, myPlayer: false);
+            Managers.Object.Add(obj, myPlayer: false);            
         }
+        
         //Debug.Log("S_SpawnHandler");
         //Debug.Log(spawnPacket.Players);
     }

@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.Protocol;
+﻿using Data;
+using Google.Protobuf.Protocol;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -56,7 +57,12 @@ public class ObjectManager
         }
         else if(objectType == GameObjectType.Monster )
         {
-            GameObject go = Managers.Resource.Instantiate("Creature/Monster");
+            MonsterData monsterData = null;
+            Managers.Data.MonsterDict.TryGetValue(info.TemplateId, out monsterData);
+
+            if (monsterData == null) return;
+
+            GameObject go = Managers.Resource.Instantiate($"Creature/{monsterData.prefabs}");
             go.name = info.Name;
             _objects.Add(info.ObjectId, go);
 
@@ -78,6 +84,23 @@ public class ObjectManager
             //ac.Dir = info.PosInfo.MoveDir;
             //ac.CellPos = new Vector3Int(info.PosInfo.PosX, info.PosInfo.PosY, 0);
             ac.SyncPos();
+        }
+        else if(objectType == GameObjectType.Npc)
+        {
+            MonsterData monsterData = null;
+            Managers.Data.MonsterDict.TryGetValue(info.TemplateId, out monsterData);
+
+            if (monsterData == null) return;
+
+            GameObject go = Managers.Resource.Instantiate($"Creature/Npc/{monsterData.prefabs}");
+            go.name = info.Name;
+            _objects.Add(info.ObjectId, go);
+            
+            NpcController nc = go.GetComponent<NpcController>();
+            nc.Id = info.ObjectId;
+            nc.PosInfo = info.PosInfo;
+            nc.Stat = info.StatInfo;
+            nc.SyncPos();            
         }
        
     }

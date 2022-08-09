@@ -37,6 +37,16 @@ public class CreatureController : BaseController
         UpdateHpBar();
     }
 
+    protected void HideHpBar()
+    {
+        Debug.Log("HpBar Check");
+
+        if (_hpBar == null) return;
+
+        Debug.Log("HpBar DeActive");
+        _hpBar.gameObject.SetActive(false);
+    }
+
     void UpdateHpBar()
     {
         if (_hpBar == null)

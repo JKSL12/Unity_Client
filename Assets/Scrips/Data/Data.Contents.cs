@@ -141,6 +141,8 @@ namespace Data
     {
         public int id;
         public string name;
+        public string prefabs;
+        public bool npc;
         public StatInfo stat;
         public string prefabPath;
     }
